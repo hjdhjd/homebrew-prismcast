@@ -29,6 +29,7 @@ class Prismcast < Formula
         prismcast service install
         prismcast service start
         prismcast service stop
+        prismcast service status
 
       The web dashboard is available at http://localhost:5589
     EOS
