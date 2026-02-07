@@ -1,0 +1,78 @@
+# Update the Homebrew formula when a new PrismCast version is published to npm. Triggered by a repository dispatch event from the
+# prismcast repository's release workflow, or manually via workflow_dispatch.
+#
+name: "Update Formula"
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-formula
+
+jobs:
+  update:
+    name: "Update formula"
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout the repository.
+        uses: actions/checkout@v4
+
+      - name: Check for a new version on npm.
+        id: npm
+        run: |
+          # Brief delay to allow the npm registry to propagate the new version.
+          sleep 30
+
+          RESPONSE=$(curl -sf https://registry.npmjs.org/prismcast/latest) || { echo "Failed to fetch version from npm registry."; exit 1; }
+          LATEST=$(echo "$RESPONSE" | jq -r .version)
+
+          if [ -z "$LATEST" ] || [ "$LATEST" = "null" ]; then
+            echo "Unable to determine the latest version from npm."
+            exit 1
+          fi
+
+          CURRENT=$(grep 'url ' Formula/prismcast.rb | grep -o '[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*')
+
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+
+          if [ "$LATEST" != "$CURRENT" ]; then
+            echo "Updating formula: $CURRENT -> $LATEST"
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Formula is already up to date at $CURRENT."
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update the formula.
+        if: steps.npm.outputs.update == 'true'
+        env:
+          VERSION: ${{ steps.npm.outputs.latest }}
+        run: |
+          TARBALL_URL="https://registry.npmjs.org/prismcast/-/prismcast-${VERSION}.tgz"
+
+          SHA=$(curl -sfL "$TARBALL_URL" | shasum -a 256 | cut -d' ' -f1)
+
+          if ! echo "$SHA" | grep -qE '^[0-9a-f]{64}$'; then
+            echo "Failed to compute a valid SHA-256 for the tarball."
+            exit 1
+          fi
+
+          sed -i "s|url \"https://registry.npmjs.org/prismcast/-/prismcast-.*\.tgz\"|url \"${TARBALL_URL}\"|" Formula/prismcast.rb
+          sed -i "s|sha256 \".*\"|sha256 \"${SHA}\"|" Formula/prismcast.rb
+
+      - name: Commit and push.
+        if: steps.npm.outputs.update == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/prismcast.rb
+          git commit -m "Update prismcast to v${{ steps.npm.outputs.latest }}."
+          git push
