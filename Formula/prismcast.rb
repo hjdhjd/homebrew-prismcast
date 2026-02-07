@@ -19,14 +19,6 @@ class Prismcast < Formula
     bin.install_symlink Dir[libexec/"bin/*"]
   end
 
-  service do
-    run opt_bin/"prismcast"
-    keep_alive true
-    log_path var/"log/prismcast.log"
-    error_log_path var/"log/prismcast.log"
-    environment_variables PATH: "#{HOMEBREW_PREFIX}/bin:#{HOMEBREW_PREFIX}/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
-  end
-
   def caveats
     <<~EOS
       PrismCast uses Google Chrome to capture video from streaming sites.
@@ -34,9 +26,6 @@ class Prismcast < Formula
         brew install --cask google-chrome
 
       To run PrismCast as a service:
-        brew services start prismcast
-
-      PrismCast also includes built-in service management:
         prismcast service install
         prismcast service start
         prismcast service stop

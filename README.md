@@ -29,12 +29,6 @@ The web dashboard will be available at [http://localhost:5589](http://localhost:
 To run PrismCast in the background:
 
 ```sh
-brew services start prismcast
-```
-
-PrismCast also includes its own built-in service management if you prefer:
-
-```sh
 prismcast service install
 prismcast service start
 prismcast service stop
