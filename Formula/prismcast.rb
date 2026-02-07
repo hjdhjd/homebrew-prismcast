@@ -12,7 +12,7 @@ class Prismcast < Formula
     regex(/"version"\s*:\s*"v?(\d+(?:\.\d+)+)"/i)
   end
 
-  depends_on "node@22"
+  depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
