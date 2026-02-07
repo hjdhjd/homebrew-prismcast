@@ -32,6 +32,7 @@ To run PrismCast in the background:
 prismcast service install
 prismcast service start
 prismcast service stop
+prismcast service status
 ```
 
 ## Updating and Uninstalling
