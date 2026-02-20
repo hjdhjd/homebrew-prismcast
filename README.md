@@ -38,7 +38,8 @@ prismcast service status
 ## Updating and Uninstalling
 
 ```sh
-brew upgrade prismcast
+prismcast upgrade
+# or: brew upgrade prismcast
 brew uninstall prismcast
 ```
 

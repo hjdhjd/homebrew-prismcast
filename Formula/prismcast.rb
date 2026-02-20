@@ -1,14 +1,14 @@
 require "language/node"
 
 class Prismcast < Formula
-  desc "Browser-based live TV streaming server for Channels DVR and Plex"
+  desc "Browser-based live TV capture server for Channels DVR, Plex, and other streaming clients"
   homepage "https://github.com/hjdhjd/prismcast"
   url "https://registry.npmjs.org/prismcast/-/prismcast-1.4.0.tgz"
   sha256 "cba2c98c9bace478323724748519d47bdbca1a978a167096ee9107e309d846de"
   license "ISC"
 
   livecheck do
-    url "https://registry.npmjs.org/prismcast/-/prismcast-1.4.0.tgz"
+    url "https://registry.npmjs.org/prismcast/latest"
     regex(/"version"\s*:\s*"v?(\d+(?:\.\d+)+)"/i)
   end
 
@@ -24,6 +24,9 @@ class Prismcast < Formula
       PrismCast uses Google Chrome to capture video from streaming sites.
       If you don't already have Chrome installed:
         brew install --cask google-chrome
+
+      To upgrade PrismCast:
+        prismcast upgrade
 
       To run PrismCast as a service:
         prismcast service install
