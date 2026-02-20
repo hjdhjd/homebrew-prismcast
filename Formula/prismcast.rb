@@ -3,12 +3,12 @@ require "language/node"
 class Prismcast < Formula
   desc "Browser-based live TV streaming server for Channels DVR and Plex"
   homepage "https://github.com/hjdhjd/prismcast"
-  url "https://registry.npmjs.org/prismcast/-/prismcast-1.3.4.tgz"
-  sha256 "b4a14f3f54583a9ad1a7de3c4ae426bd61be0b0b8f3c47efabeff40596ffd34e"
+  url "https://registry.npmjs.org/prismcast/-/prismcast-1.4.0.tgz"
+  sha256 "cba2c98c9bace478323724748519d47bdbca1a978a167096ee9107e309d846de"
   license "ISC"
 
   livecheck do
-    url "https://registry.npmjs.org/prismcast/-/prismcast-1.3.4.tgz"
+    url "https://registry.npmjs.org/prismcast/-/prismcast-1.4.0.tgz"
     regex(/"version"\s*:\s*"v?(\d+(?:\.\d+)+)"/i)
   end
 
