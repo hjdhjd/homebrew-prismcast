@@ -3,8 +3,8 @@ require "language/node"
 class Prismcast < Formula
   desc "Browser-based live TV capture server for Channels DVR, Plex, and other streaming clients"
   homepage "https://github.com/hjdhjd/prismcast"
-  url "https://registry.npmjs.org/prismcast/-/prismcast-1.13.0.tgz"
-  sha256 "ddc71c0954102c232c831d91aff51f70aa6fb33f30f9c8a080d4bd0875ded347"
+  url "https://registry.npmjs.org/prismcast/-/prismcast-1.14.0.tgz"
+  sha256 "c33a806c8b453660c014db95eb14601f729bf8794d5bf18642fc6736b353c40e"
   license "ISC"
 
   livecheck do
